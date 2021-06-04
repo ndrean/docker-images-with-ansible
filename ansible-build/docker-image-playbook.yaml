@@ -3,7 +3,7 @@
   hosts: localhost
   tasks:
   - name: Pull Nginx Image
-    docker_container:
+    docker_container: # use the Ansible module
       name: "nginx-ansible-base"
       image: "nginx:latest"
       state: started
@@ -20,7 +20,7 @@
   tasks:
     - name: Install Python3
       raw: apt update && apt upgrade -y && apt install python3 -y
-    - name: Install Rsync
+    - name: Install Rsync on an Ubuntu container
       apt:
         name: rsync
     - name: Copy local configuration Files to Nginx Conf
@@ -43,7 +43,7 @@
 - name: Clean Up Docker Containers
   hosts: localhost
   tasks:
-    - name: Remove Running Base Image
+    - name: Remove Running Base Image that was just needed to configure the new image
       docker_container:
         name: nginx-ansible-base
         state: absent
